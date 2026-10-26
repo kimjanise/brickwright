@@ -42,6 +42,20 @@ This repository contains two packages:
    the [packages/brickwright README](packages/brickwright/README.md).
 3. Have fun!
 
+## Chat studio (this fork)
+
+A ChatGPT-style interface for prompting custom builds, revising them in conversation,
+rotating a 3D preview, downloading LDraw models, and checking live LEGO prices.
+
+```sh
+uv sync --all-packages --all-extras --group dev
+codex login
+uv run --all-extras uvicorn brickwright.web.app:app --host 127.0.0.1 --port 8818
+```
+
+Open http://127.0.0.1:8818. Requires the official Codex CLI. This is a local studio;
+see [web/README.md](web/README.md) for frontend development and hosting requirements.
+
 ## Live LEGO Pick a Brick pricing (this fork)
 
 This fork adds current LEGO storefront prices for generated builds. It preserves

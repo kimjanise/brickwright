@@ -29,3 +29,7 @@ mutants/
 
 # LEGO model records
 records/
+
+# Local chat workspace and frontend dependencies
+.web-data/
+node_modules/
