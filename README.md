@@ -42,6 +42,27 @@ This repository contains two packages:
    the [packages/brickwright README](packages/brickwright/README.md).
 3. Have fun!
 
+## `/lego-build` skill (this fork)
+
+Use a prompt to get a validated custom model, rendered preview, live LEGO parts
+price with a breakdown, and a CSV accepted by LEGO Pick a Brick's **Upload List**.
+
+[Download the skill ZIP](skills/lego-build.zip) · [Read the skill](skills/lego-build/SKILL.md)
+
+Extract the `lego-build` folder into your agent's personal skills directory:
+`~/.codex/skills/` for Codex or `~/.claude/skills/` for Claude Code. Refresh skill
+discovery or start a new session. Invoke `$lego-build create me a sunflower build`
+in Codex, or `/lego-build create me a sunflower build` in clients with slash-skill
+commands. It uses the current assistant to author the model; no local web server
+or separate AI API key is required. First use needs Python, Git, uv, and Internet
+access to install the pinned runtime. Live pricing always needs Internet access.
+
+The default store is US/USD; specify another supported market in the prompt.
+The parts CSV contains LEGO **element IDs**, including color, and quantities.
+A separate breakdown CSV contains names, unit prices, totals, and availability.
+Missing pieces produce clearly labeled partial files, never invented IDs/prices.
+Prices exclude shipping, service fees, and additional checkout tax.
+
 ## Chat studio (this fork)
 
 A ChatGPT-style interface for prompting custom builds, revising them in conversation,

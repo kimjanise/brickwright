@@ -1,0 +1,4 @@
+interface:
+  display_name: "LEGO Build"
+  short_description: "Custom builds, live prices, and LEGO upload CSVs"
+  default_prompt: "Use $lego-build to create a sunflower build with a live price breakdown and a LEGO Pick a Brick upload CSV."
