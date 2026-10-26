@@ -160,6 +160,7 @@ def test_preview_renders_real_parts_without_clipping(tmp_path):
 def test_build_changed_during_quote_does_not_publish(record, tmp_path, monkeypatch):
     from brickwright.record import Status
 
+    monkeypatch.syspath_prepend(str(SCRIPT.parent))
     record.ldr_path.write_text("1 4 0 0 0 1 0 0 0 1 0 0 0 1 3001.dat")
     record.update_meta(
         finalized=True,

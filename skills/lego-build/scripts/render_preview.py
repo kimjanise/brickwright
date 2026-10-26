@@ -8,12 +8,18 @@ from brickwright.tools.software_rendering import Mesh, _inset_part, _rasterize
 from PIL import Image
 
 
-def render_preview(ldraw: str, output: Path) -> None:
+def render_preview(
+    ldraw: str,
+    output: Path,
+    *,
+    new_from: int = 0,
+    camera: tuple[float, float, float] = (-1.0, -0.7, -1.3),
+) -> None:
     build = from_ldraw(ldraw)
     if not 0 < build.brick_count <= 2000:
         raise ValueError("Preview supports 1–2,000 pieces.")
     combined = Mesh()
-    for placement in build.flattened_placements:
+    for index, placement in enumerate(build.flattened_placements):
         body = placement.collision_body
         mesh = body.collider.mesh
         vertices = _inset_part(mesh.vertices)
@@ -23,6 +29,8 @@ def render_preview(ldraw: str, output: Path) -> None:
         rgba = [int(color.rgb[i : i + 2], 16) / 255 for i in (0, 2, 4)] + [
             getattr(color, "alpha", 255) / 255
         ]
+        if index < new_from:
+            rgba = [0.78, 0.8, 0.81, 1.0]
         combined.part_vertices.append(faces)
         combined.part_colors.append(np.tile(rgba, (len(faces), 1)))
     vertices, colors = combined.combined()
@@ -35,7 +43,7 @@ def render_preview(ldraw: str, output: Path) -> None:
         np.concatenate([vertices, np.repeat(padding[:, None, :], 3, axis=1)]),
         np.concatenate([colors, np.zeros((2, 4))]),
     )
-    pixels = _rasterize(framed, (-1.0, -0.7, -1.3), (0.0, 1.0, 0.0), 1000)
+    pixels = _rasterize(framed, camera, (0.0, 1.0, 0.0), 1000)
     foreground = Image.fromarray(pixels)
     background = Image.new("RGBA", foreground.size, "#f5f5f2")
     Image.alpha_composite(background, foreground).convert("RGB").save(output)

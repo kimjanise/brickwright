@@ -61,11 +61,13 @@ def main() -> None:
         raise SystemExit(
             "Runtime missing. Run uv sync --all-packages --group dev in the checkout."
         )
+    if not args.repo:
+        run(["uv", "pip", "install", "--python", str(python), "reportlab==5.1.0"])
     run(
         [
             str(python),
             "-c",
-            "from brickwright.pricing import PickABrickClient; from brickwright.record import Record; import numpy; import PIL",
+            "from brickwright.pricing import PickABrickClient; from brickwright.record import Record; import numpy; import PIL; import reportlab",
         ]
     )
     print(

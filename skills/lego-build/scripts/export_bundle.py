@@ -199,7 +199,9 @@ def write_bundle(
     return data
 
 
-def export_record(record_path: Path, out: Path, locale: str) -> dict[str, Any]:
+def export_record(
+    record_path: Path, out: Path, locale: str, instructions: Path | None = None
+) -> dict[str, Any]:
     record_path, out = record_path.resolve(), out.resolve()
     if out.exists():
         raise FileExistsError(f"Choose a new output folder; {out} already exists.")
@@ -210,6 +212,14 @@ def export_record(record_path: Path, out: Path, locale: str) -> dict[str, Any]:
     if not record.read_meta().finalized:
         raise ValueError("Validate and finalize the current build before exporting.")
     ldraw = record.ldr_path.read_text(encoding="utf-8")
+    from build_instructions import assembly_steps, write_instructions
+
+    assembly_steps(ldraw)
+    notes = (
+        json.loads(instructions.read_text(encoding="utf-8")) if instructions else None
+    )
+    if notes is not None and not isinstance(notes, dict):
+        raise ValueError("Instruction notes must be a JSON object.")
     items = bom_from_ldraw(ldraw)
     with PickABrickClient(locale) as client:
         quote = client.quote(items)
@@ -233,10 +243,25 @@ def export_record(record_path: Path, out: Path, locale: str) -> dict[str, Any]:
             from render_preview import render_preview
 
             render_preview(ldraw, kit / "build.png")
+        manifest = write_instructions(ldraw, kit, notes)
+        report = kit / "BUILD.md"
+        report.write_text(
+            report.read_text().replace(
+                "This model is not a step-by-step instruction booklet.",
+                f"Follow the {len(manifest['steps'])} illustrated steps in `instructions.pdf`; individual views are in `steps/`. Assembly order is agent-authored, not physically tested.",
+            )
+        )
         with ZipFile(kit / "build-kit.zip", "w", ZIP_DEFLATED) as archive:
-            for path in sorted(kit.iterdir()):
-                if path.suffix != ".zip":
-                    archive.write(path, path.name)
+            for path in sorted(kit.rglob("*")):
+                if path.is_file() and path.suffix != ".zip":
+                    archive.write(path, path.relative_to(kit))
+        if (
+            record.source_sha256 != source_hash
+            or record.ldr_path.read_text(encoding="utf-8") != ldraw
+        ):
+            raise ValueError(
+                "Build changed while rendering instructions; finalize and export again."
+            )
         if out.exists():
             raise FileExistsError(f"Output appeared during export: {out}")
         kit.rename(out)
@@ -259,9 +284,14 @@ def main() -> int:
     parser.add_argument("--record", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--locale", default="en-us")
+    parser.add_argument(
+        "--instructions",
+        type=Path,
+        help="Optional JSON with title, preparation and one title/note per authored step",
+    )
     args = parser.parse_args()
     try:
-        result = export_record(args.record, args.out, args.locale)
+        result = export_record(args.record, args.out, args.locale, args.instructions)
     except (OSError, ValueError, PricingError) as exc:
         print(f"Export failed: {exc}", file=sys.stderr)
         return 1

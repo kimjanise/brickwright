@@ -44,7 +44,7 @@ This repository contains two packages:
 
 ## `/lego-build` skill (this fork)
 
-Use a prompt to get a validated custom model, rendered preview, live LEGO parts
+Use a prompt to get a validated custom model, rendered preview, illustrated assembly PDF, live LEGO parts
 price with a breakdown, and a CSV accepted by LEGO Pick a Brick's **Upload List**.
 
 [Download the skill ZIP](skills/lego-build.zip) · [Read the skill](skills/lego-build/SKILL.md)
@@ -60,6 +60,9 @@ access to install the pinned runtime. Live pricing always needs Internet access.
 The default store is US/USD; specify another supported market in the prompt.
 The parts CSV contains LEGO **element IDs**, including color, and quantities.
 A separate breakdown CSV contains names, unit prices, totals, and availability.
+Each build includes authored assembly steps with two views and a parts list per step.
+The PDF, individual step images, and LDraw step markers are included in the kit.
+Assembly sequences are agent-authored and have not been physically tested.
 Missing pieces produce clearly labeled partial files, never invented IDs/prices.
 Prices exclude shipping, service fees, and additional checkout tax.
 

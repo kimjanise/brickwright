@@ -15,3 +15,9 @@ markers = [
 filterwarnings = [
     "ignore::DeprecationWarning:pygfx",
 ]
+
+[dependency-groups]
+dev = [
+    "pypdf>=6.21.2",
+    "reportlab==5.1.0",
+]
