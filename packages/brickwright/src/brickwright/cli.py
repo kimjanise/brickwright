@@ -29,6 +29,7 @@ from .driver.external_critique import (
 )
 from .driver.gallery import print_gallery
 from .driver.tracking import tally_failure
+from .pricing.commands import price
 from .prompts import system_prompt
 from .record import Record, Timing, ValidationFailures, list_records
 from .tools import FinalizationReport, RenderReport, ValidationReport
@@ -44,6 +45,8 @@ app = typer.Typer(
     add_completion=False,
     no_args_is_help=True,
 )
+
+app.command()(price)
 
 external_app = typer.Typer(
     help="Operations meant for an external agent.",

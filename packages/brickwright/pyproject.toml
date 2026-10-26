@@ -19,6 +19,7 @@ requires-python = ">=3.11"
 dependencies = [
     "bricklayer-sdk",
     "gltflib",
+    "httpx>=0.28.1",
     "ldraw2mesh",
     "litellm",
     "numpy",
@@ -39,6 +40,12 @@ Repository = "https://github.com/AvaLovelace1/brickwright"
 
 [project.scripts]
 brickwright = "brickwright.cli:main"
+
+[project.optional-dependencies]
+api = [
+    "fastapi>=0.162.0",
+    "uvicorn>=0.54.0",
+]
 
 [build-system]
 requires = ["uv_build>=0.11.2,<0.12.0"]

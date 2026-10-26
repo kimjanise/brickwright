@@ -1,5 +1,5 @@
 version = 1
-revision = 5
+revision = 3
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
@@ -336,6 +336,7 @@ source = { editable = "packages/brickwright" }
 dependencies = [
     { name = "bricklayer-sdk" },
     { name = "gltflib" },
+    { name = "httpx" },
     { name = "ldraw2mesh" },
     { name = "litellm" },
     { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
@@ -346,6 +347,12 @@ dependencies = [
     { name = "rendercanvas" },
     { name = "rich" },
     { name = "typer" },
+]
+
+[package.optional-dependencies]
+api = [
+    { name = "fastapi" },
+    { name = "uvicorn" },
 ]
 
 [package.dev-dependencies]
@@ -361,7 +368,9 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "bricklayer-sdk", editable = "packages/bricklayer" },
+    { name = "fastapi", marker = "extra == 'api'", specifier = ">=0.162.0" },
     { name = "gltflib" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "ldraw2mesh" },
     { name = "litellm" },
     { name = "numpy" },
@@ -371,7 +380,9 @@ requires-dist = [
     { name = "rendercanvas" },
     { name = "rich" },
     { name = "typer" },
+    { name = "uvicorn", marker = "extra == 'api'", specifier = ">=0.54.0" },
 ]
+provides-extras = ["api"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -842,7 +853,7 @@ resolution-markers = [
     "python_full_version < '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "wrapt" },
+    { name = "wrapt", marker = "python_full_version < '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/49/85/12f0a49a7c4ffb70572b6c2ef13c90c88fd190debda93b23f026b25f9634/deprecated-1.3.1.tar.gz", hash = "sha256:b1b50e0ff0c1fddaa5708a2c6b0a6588bb09b892825ab2b214ac9ea9d92a5223", size = 2932523, upload-time = "2025-10-30T08:19:02.757Z" }
 wheels = [
@@ -865,7 +876,7 @@ resolution-markers = [
     "python_full_version == '3.12.*' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "wrapt" },
+    { name = "wrapt", marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f7/9c/16649913bf14c73e0a9453782e148362ff2657067deff6aa9c7ebcddcc31/deprecated-3.0.0.tar.gz", hash = "sha256:16850204d3a1e6bb0acd06bff48d96e8b0a0d25d1c52f71705405a0f4894192d", size = 166912, upload-time = "2026-09-26T13:58:10.675Z" }
 wheels = [
@@ -935,6 +946,23 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/eb/ea/8a3b73064fe653c523492c8331a36e4c9f54db24ee4821ca1c027281d766/dracopy-2.2.0-cp315-cp315-musllinux_1_2_x86_64.whl", hash = "sha256:435478e86d73f17f195431d2bfb5aee4c5253fe4c45ca242025034e181f917fd", size = 6089586, upload-time = "2026-10-07T20:37:14.422Z" },
     { url = "https://files.pythonhosted.org/packages/76/f6/81fc737664f734171d23d084eb5d2bce78e7c19aec6c5d4989f48e5166aa/dracopy-2.2.0-cp315-cp315-win32.whl", hash = "sha256:175ef982f86e530dc0734dbd3f49b17813ab30491c79f68655f9dc43e390c83c", size = 4610824, upload-time = "2026-10-07T20:37:17.228Z" },
     { url = "https://files.pythonhosted.org/packages/61/5d/ce83d5285d87af273ec94439ded9b3b099d8530276991397814609741a20/dracopy-2.2.0-cp315-cp315-win_amd64.whl", hash = "sha256:bd4b87131a7f011aa16d6fae65b38ddadcc23e2a13a90bc1630a3a9a29513974", size = 5310406, upload-time = "2026-10-07T20:37:15.807Z" },
+]
+
+[[package]]
+name = "fastapi"
+version = "0.162.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "annotated-doc" },
+    { name = "opentelemetry-api" },
+    { name = "pydantic" },
+    { name = "starlette" },
+    { name = "typing-extensions" },
+    { name = "typing-inspection" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e9/eb/2cf8c80abf09b2800aef0a83b41066fbfda8ee5495b7a08b9d1af40f7046/fastapi-0.162.0.tar.gz", hash = "sha256:6a22c1e2e6e32e0633ee7e170f00009a29b8228b16feb219ee42f32fd8d88a8f", size = 527867, upload-time = "2026-10-23T18:47:33.264Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b4/4f/3f2c25c9b43970b5e9a08beb5e04776247edea684ddc0930f4f02f0bb6cb/fastapi-0.162.0-py3-none-any.whl", hash = "sha256:3785963de305dd09912426cb81f2d230fce98ab3521cdfe97265c8d14983128c", size = 148912, upload-time = "2026-10-23T18:47:31.734Z" },
 ]
 
 [[package]]
@@ -2137,6 +2165,18 @@ wheels = [
 ]
 
 [[package]]
+name = "opentelemetry-api"
+version = "1.45.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2e/02/6e0ae9cc61bd3169d401077b507b3ebc344745171e1051ab430be012dcd9/opentelemetry_api-1.45.1.tar.gz", hash = "sha256:aa38ed19bcc084ba42782a73255b3582283eced7ad6dddbd6695189e69adfb75", size = 72804, upload-time = "2026-10-06T17:32:58.133Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1e/41/f7dcf80b81ee8e71c1a2b59f14208bc723edbd89ed027a73b175abf6348e/opentelemetry_api-1.45.1-py3-none-any.whl", hash = "sha256:b31553efa588ae44bc306f863c785c5333a9ecc091248c6ee68b4b6c87fdedfb", size = 60256, upload-time = "2026-10-06T17:32:33.506Z" },
+]
+
+[[package]]
 name = "packaging"
 version = "26.3"
 source = { registry = "https://pypi.org/simple" }
@@ -3281,6 +3321,19 @@ wheels = [
 ]
 
 [[package]]
+name = "starlette"
+version = "1.10.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/48/bb/3d8757f21e9a53d9035c9eb039a777047139a16bfdbedfc7a58241c3d914/starlette-1.10.0.tar.gz", hash = "sha256:b8399098d4c1e3522734f7235dc79b1fc967f96cf139c81e0fa30479e0685f9b", size = 2734356, upload-time = "2026-10-24T15:04:12.342Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/88/2e/947cfe02def9371c07cd5bf5b6b61c829e9aecb9904db02a66cfafbc1eec/starlette-1.10.0-py3-none-any.whl", hash = "sha256:478c0ab3b4ced6e82719849c118fa406f0278a3499c1a898cd15cd31bdc38ce4", size = 80571, upload-time = "2026-10-24T15:04:10.371Z" },
+]
+
+[[package]]
 name = "textual"
 version = "8.2.8"
 source = { registry = "https://pypi.org/simple" }
@@ -3535,6 +3588,19 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/52/d9/e35aa71ce55987db5a22e144f9acbc5ac134d094bfc574c05f86716c6b51/usd_core-26.11-cp314-none-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:543ea11f24416aa98e3d956374c6c443b8d621348708ef4711c02b7fb452e8db", size = 27804713, upload-time = "2026-10-21T05:54:35.544Z" },
     { url = "https://files.pythonhosted.org/packages/d3/62/9eab0e48278156c375c13a96592732981779603ac0a9080f42546a288441/usd_core-26.11-cp314-none-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c3684b90075c56f986e96860142ee586092ba202a12a2b70512c5a05b0ea1af1", size = 28805780, upload-time = "2026-10-21T05:54:38.839Z" },
     { url = "https://files.pythonhosted.org/packages/39/dd/d8e391d9a7a08e73334e69822e86d2e20181fcc4d698c74a098a171afdd2/usd_core-26.11-cp314-none-win_amd64.whl", hash = "sha256:9f31e6a1a6b81242b9856660efe3a5f37d5df02c8c065cfbd8a376a1d51f5911", size = 13652934, upload-time = "2026-10-21T05:54:41.467Z" },
+]
+
+[[package]]
+name = "uvicorn"
+version = "0.54.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "h11" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/da/34/30e9280707135d2cfc589dfff3cb796bd07a3aeb1a3e415ba09dd89d7bb4/uvicorn-0.54.0.tar.gz", hash = "sha256:a2e33cbfaa0306f8e6b0c13e0cb89d7d7a2da3e62b90c66e18c33d9807b28620", size = 112283, upload-time = "2026-09-25T06:52:37.601Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/38/0c/b54a4fdd7f90a3af8b02ebc9ce6712c2c208b7926a2f7bad95c33ebbe943/uvicorn-0.54.0-py3-none-any.whl", hash = "sha256:505bdb0f318731d45f1f712071fc781a8981f6847a31c902c9f5e652d4f67faf", size = 87427, upload-time = "2026-09-25T06:52:35.829Z" },
 ]
 
 [[package]]

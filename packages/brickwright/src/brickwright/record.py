@@ -388,6 +388,7 @@ class Record:
     def clear_exports(self) -> None:
         """Discard generated outputs and their completion marker; keep snapshots."""
         paths = [
+            self.out_dir / "price.json",
             self.ldr_path,
             self.mesh_path,
             self.render_path,
